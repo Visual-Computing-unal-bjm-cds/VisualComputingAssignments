@@ -14,7 +14,7 @@ Introducir el análisis de imágenes/video en el lenguaje de Processing.
 |       Integrantes       |  github nick  |
 | ----------------------- | ------------- |
 |   Brian Julian Moreno   |   bjmorenon   |
-| Christan David Sanabria | Content Cell  |
+| Christan David Sanabria |	 cdsanabriar  |
 
 # Discusión
 
