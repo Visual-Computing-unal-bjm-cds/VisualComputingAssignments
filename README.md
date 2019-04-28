@@ -4,7 +4,9 @@
 
 Introducir el análisis de imágenes/video en el lenguaje de [Processing](https://processing.org/).
 
-## Tareas
+
+## Trabajo Realizado
+
 
 Implementar las siguientes operaciones de análisis para imágenes/video:
 
@@ -18,11 +20,13 @@ Emplear dos [canvas](https://processing.org/reference/PGraphics.html), uno para 
 
 ## Integrantes
 
-Complete la tabla:
 
-| Integrante | github nick |
-|------------|-------------|
-|            |             |
+
+|       Integrantes       |  github nick  |
+| ----------------------- | ------------- |
+|   Brian Julian Moreno   |   bjmorenon   |
+| Christan David Sanabria |	 cdsanabriar  |
+
 
 ## Discusión
 
