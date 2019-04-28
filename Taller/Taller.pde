@@ -11,7 +11,7 @@ PImage myImage, myImageH, imgOr;
 Movie myMovie;
 boolean button = false;
 float x;
-int y, w, h = 50, change;
+int y, w, h = 50, change, fr;
 
 //mascaras de convolucion:
 float mascaras[][][]={
@@ -69,11 +69,11 @@ PImage convolucion(PImage img, float[][]mask) {
 //SETUP---------------------------------------------------------------
 void setup() {
   fullScreen();
-  frameRate(60);
   background(34, 164, 213);
   y = height-150;
   x = width-(3*width/5);
   w = width/5;  
+  fr = 20;
   //Cargar Imagen
   myImage = loadImage("img0.jpg");
   if (myImage.width<myImage.height) {
@@ -87,7 +87,6 @@ void setup() {
   ////Cargar video
   myMovie = new Movie(this, "video.mov");
   myMovie.loop();
-  myMovie.speed(1);
   //creacion de los espacios graficos dentro de la ventana
   pg=createGraphics(int(height*0.7), int(height*0.7));
   pg2=createGraphics(int(height*0.7), int(height*0.7));
@@ -131,16 +130,16 @@ void setup() {
 }
 //DRAW---------------------------------------------------------------
 void draw() {
-
   if (button) {
     fill(213, 34, 66);
     rect(x, y, w, h, 7);
     fill(255);
     text("Prueba con Imagen", width-(2.7*width/5), height-120);
-
+    print(frameRate);
     pg.beginDraw();
     pg.background(34, 164, 213);
     myMovie.loadPixels();
+    frameRate(fr);
     int prom;
     for (int i = 0; i < (myMovie.width*myMovie.height); i++) {
       prom=int((red(myMovie.pixels[i])+green(myMovie.pixels[i])+blue(myMovie.pixels[i]))/3);
@@ -152,10 +151,36 @@ void draw() {
 
     pg2.beginDraw();
     pg2.background(34, 164, 213);
-    pg2.image(myMovie, 0, (pg2.height - myMovie.height)/2, pg2.width, myMovie.height);
+    pg2.textSize(32);
+    pg2.textAlign(CENTER);
+    pg2.fill(213, 34, 66);
+    pg2.text("Frames por Segundo",pg2.width/2,(pg.height)/2 - 35);
+    pg2.text(fr,pg2.width/2,(pg.height)/2);
+    pg2.text(frameRate,pg2.width/2,(pg.height)/2 + 35 );
     pg2.endDraw();
     image(pg, (width-(pg.width*2))/3, 50);
     image(pg2, ((width-(pg2.width*2))/3)*2 + pg2.width, 50);
+    
+    if (keyPressed) {
+      //Inicializacion del cuadro de la derecha para el histograma
+     
+      switch(keyCode) {
+      case 38: //arriba
+        fr++;
+        if (fr==20) {
+          fr=19;
+        }
+        break;
+      case 40: //izquierda…..también admite LEFT
+        fr--;
+        if (fr==0) {
+          fr=1;
+        }
+        break;
+      default:
+        break;
+      }
+    }
   } else {
     fill(213, 34, 66);
     rect(x, y, w, h, 7);
@@ -211,8 +236,8 @@ void draw() {
 
     image(pg, (width-(pg.width*2))/3, 50);
     image(pg2, ((width-(pg2.width*2))/3)*2 + pg2.width, 50);
+    delay(200);
   }
-  delay(200);
 }
 
 void mousePressed() {
