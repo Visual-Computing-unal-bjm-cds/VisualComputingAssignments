@@ -161,10 +161,14 @@ void draw() {
     rect(x, y, w, h, 7);
     fill(255);
     text("Prueba con video", width-(2.67*width/5), height-120);
-
+    pg.beginDraw();
+    pg.background(34, 164, 213);
+    pg.image(myImage,(pg.width-myImage.width)/2,(pg.height-myImage.height)/2);
+    pg.endDraw();
+    
     if (keyPressed) {
       //Inicializacion del cuadro de la derecha para el histograma
-      pg2.beginDraw();
+     
       switch(keyCode) {
       case 39: //derecha……también admite RIGHT
         change++;
@@ -181,8 +185,9 @@ void draw() {
       default:
         break;
       }
-
-      //creacion de la mascara de convolucion
+    }
+     pg2.beginDraw();
+          //creacion de la mascara de convolucion
       myImageH=convolucion(imgOr, mascaras[change]);
       pg2.background(34, 164, 213);
       pg2.image(myImageH, (pg.width-myImage.width)/2, (pg2.height-myImageH.height)/2);
@@ -203,7 +208,6 @@ void draw() {
         pg2.line(i+(pg.width-myImage.width)/2, myImage.height+(pg2.height-myImageH.height)/2, i+(pg.width-myImage.width)/2, y+(pg2.height-myImageH.height)/2);
       }
       pg2.endDraw();
-    }
 
     image(pg, (width-(pg.width*2))/3, 50);
     image(pg2, ((width-(pg2.width*2))/3)*2 + pg2.width, 50);
