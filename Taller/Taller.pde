@@ -75,7 +75,7 @@ void setup() {
   w = width/5;  
   fr = 20;
   //Cargar Imagen
-  myImage = loadImage("img1.jpg");
+  myImage = loadImage("img0.jpg");
   if (myImage.width<myImage.height) {
     myImage.resize(0, int(height*0.7));
   } else {
@@ -136,7 +136,6 @@ void draw() {
     rect(x, y, w, h, 7);
     fill(255);
     text("Prueba con Imagen", width-(2.7*width/5), height-120);
-    print(frameRate);
     myMovie.play();
     pg.beginDraw();
     pg.background(34, 164, 213);
@@ -156,16 +155,16 @@ void draw() {
     pg2.textSize(32);
     pg2.textAlign(CENTER);
     pg2.fill(213, 34, 66);
-    pg2.text("Frames por Segundo",pg2.width/2,(pg.height)/2 - 35);
-    pg2.text(fr,pg2.width/2,(pg.height)/2);
-    pg2.text(frameRate,pg2.width/2,(pg.height)/2 + 35 );
+    pg2.text("Frames por Segundo", pg2.width/2, (pg.height)/2 - 35);
+    pg2.text(fr, pg2.width/2, (pg.height)/2);
+    pg2.text(frameRate, pg2.width/2, (pg.height)/2 + 35 );
     pg2.endDraw();
     image(pg, (width-(pg.width*2))/3, 50);
     image(pg2, ((width-(pg2.width*2))/3)*2 + pg2.width, 50);
-    
+
     if (keyPressed) {
       //Inicializacion del cuadro de la derecha para el histograma
-     
+
       switch(keyCode) {
       case 38: //arriba
         fr++;
@@ -191,12 +190,12 @@ void draw() {
     text("Prueba con video", width-(2.67*width/5), height-120);
     pg.beginDraw();
     pg.background(34, 164, 213);
-    pg.image(myImage,(pg.width-myImage.width)/2,(pg.height-myImage.height)/2);
+    pg.image(myImage, (pg.width-myImage.width)/2, (pg.height-myImage.height)/2);
     pg.endDraw();
-    
+
     if (keyPressed) {
       //Inicializacion del cuadro de la derecha para el histograma
-     
+
       switch(keyCode) {
       case 39: //derecha……también admite RIGHT
         change++;
@@ -214,33 +213,45 @@ void draw() {
         break;
       }
     }
-     pg2.beginDraw();
-          //creacion de la mascara de convolucion
-      myImageH=convolucion(imgOr, mascaras[change]);
-      pg2.background(34, 164, 213);
-      pg2.image(myImageH, (pg.width-myImage.width)/2, (pg2.height-myImageH.height)/2);
+    pg2.beginDraw();
+    //creacion de la mascara de convolucion
+    myImageH=convolucion(imgOr, mascaras[change]);
+    pg2.background(34, 164, 213);
+    myImageH.loadPixels();
+    for (int i = 0; i < (myImageH.width*myImageH.height); i++) {
+      if(int(brightness(myImageH.pixels[i]))<initH || int(brightness(myImageH.pixels[i]))>finishH){
+        myImageH.pixels[i] = color(255, 255, 0);
+      }
+    }
+    myImageH.updatePixels();
+    pg2.image(myImageH, (pg.width-myImage.width)/2, (pg2.height-myImageH.height)/2);
 
-      //Calculo del histograma segun el brillo de cada pixel de la imagen en blanco y negro
-      int[] hist = new int[256];
-      for (int i = 0; i < myImage.width; i++) {
-        for (int j = 0; j < myImage.height; j++) {
-          int bright = int(brightness(myImage.get(i, j)));
-          hist[bright]++;
-        }
+    //Calculo del histograma segun el brillo de cada pixel de la imagen en blanco y negro
+    int[] hist = new int[256];
+    for (int i = 0; i < myImage.width; i++) {
+      for (int j = 0; j < myImage.height; j++) {
+        int bright = int(brightness(myImage.get(i, j)));
+        hist[bright]++;
       }
-      int histMax = max(hist);
-      pg2.stroke(#4dc03b);
-      if(!arrastrar){
-        initH = 0; 
-        initAux = 0;
-        finishH = myImage.width;
+    }
+    int histMax = max(hist);
+    if (!arrastrar) {
+      initH = 0; 
+      initAux = 0;
+      finishH = myImage.width;
+    }
+
+    for (int i = 0; i < myImage.width; i+=2) {
+      if (i<initH || i>finishH) {
+        pg2.stroke(#ff5733);
+      } else {
+        pg2.stroke(#4dc03b);
       }
-      for (int i = initH; i < finishH; i+=2) {
-        int which = int(map(i, 0, myImage.width, 0, 255));
-        int y = int(map(hist[which], 0, histMax, myImage.height, 0));
-        pg2.line(i+(pg.width-myImage.width)/2, myImage.height+(pg2.height-myImageH.height)/2, i+(pg.width-myImage.width)/2, y+(pg2.height-myImageH.height)/2);
-      }
-      pg2.endDraw();
+      int which = int(map(i, 0, myImage.width, 0, 255));
+      int y = int(map(hist[which], 0, histMax, myImage.height, 0));
+      pg2.line(i+(pg.width-myImage.width)/2, myImage.height+(pg2.height-myImageH.height)/2, i+(pg.width-myImage.width)/2, y+(pg2.height-myImageH.height)/2);
+    }
+    pg2.endDraw();
 
     image(pg, (width-(pg.width*2))/3, 50);
     image(pg2, ((width-(pg2.width*2))/3)*2 + pg2.width, 50);
@@ -250,14 +261,13 @@ void draw() {
 
 void mousePressed() {
   arrastrar = true;
-  if((mouseX > (((width-(pg2.width*2))/3)*2 + pg2.width+ (pg.width-myImage.width)/2)) && (mouseX < (((width-(pg2.width*2))/3)*2 + 2*pg2.width - (pg.width-myImage.width)/2))
-   && (mouseY > 50) && (mouseY < (50 + pg2.height))){
+  if ((mouseX > (((width-(pg2.width*2))/3)*2 + pg2.width+ (pg.width-myImage.width)/2)) && (mouseX < (((width-(pg2.width*2))/3)*2 + 2*pg2.width - (pg.width-myImage.width)/2))
+    && (mouseY > 50) && (mouseY < (50 + pg2.height))) {
     initAux = mouseX - (((width-(pg2.width*2))/3)*2 + pg2.width+ (pg.width-myImage.width)/2);
-    println("d" + initAux);
-  }else{
-    if((mouseX < (((width-(pg2.width*2))/3)*2 + pg2.width+ (pg.width-myImage.width)/2))){
+  } else {
+    if ((mouseX < (((width-(pg2.width*2))/3)*2 + pg2.width+ (pg.width-myImage.width)/2))) {
       initAux = 0;
-    }else if((mouseX > (((width-(pg2.width*2))/3)*2 + 2*pg2.width - (pg.width-myImage.width)/2))){
+    } else if ((mouseX > (((width-(pg2.width*2))/3)*2 + 2*pg2.width - (pg.width-myImage.width)/2))) {
       initAux = myImage.width;
     }
   }
@@ -271,25 +281,23 @@ void mousePressed() {
 }
 
 void mouseReleased() {
-  if((mouseX > (((width-(pg2.width*2))/3)*2 + pg2.width+ (pg.width-myImage.width)/2)) && (mouseX < (((width-(pg2.width*2))/3)*2 + 2*pg2.width - (pg.width-myImage.width)/2))
-   && (mouseY > 50) && (mouseY < (50 + pg2.height))){
+  if ((mouseX > (((width-(pg2.width*2))/3)*2 + pg2.width+ (pg.width-myImage.width)/2)) && (mouseX < (((width-(pg2.width*2))/3)*2 + 2*pg2.width - (pg.width-myImage.width)/2))
+    && (mouseY > 50) && (mouseY < (50 + pg2.height))) {
     initH = initAux;
     finishH = mouseX - (((width-(pg2.width*2))/3)*2 + pg2.width+ (pg.width-myImage.width)/2);
-    if(finishH < initH){
+    if (finishH < initH) {
       initH = finishH;
       finishH = initAux;
     }
-    println(initH);
-    println(finishH);
-  }else{
-    if((mouseX > (((width-(pg2.width*2))/3)*2 + 2*pg2.width - (pg.width-myImage.width)/2))){
+  } else {
+    if ((mouseX > (((width-(pg2.width*2))/3)*2 + 2*pg2.width - (pg.width-myImage.width)/2))) {
       initH = initAux;
       finishH = myImage.width;
-      if(finishH < initH){
+      if (finishH < initH) {
         initH = finishH;
         finishH = initAux;
       }
-    }else if((mouseX < (((width-(pg2.width*2))/3)*2 + pg2.width+ (pg.width-myImage.width)/2))){
+    } else if ((mouseX < (((width-(pg2.width*2))/3)*2 + pg2.width+ (pg.width-myImage.width)/2))) {
       initH = 0;
       finishH = initAux;
     }
