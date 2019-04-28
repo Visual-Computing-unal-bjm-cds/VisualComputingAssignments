@@ -30,7 +30,8 @@ Emplear dos [canvas](https://processing.org/reference/PGraphics.html), uno para 
 
 ## Discusión
 
-(describa brevemente las actividades realizadas y los resultados obtenidos)
+Inicialmente se crea este proyecto y se crean dos canvas fijos de igual tamaño que se ubican proporcionalmente en el canvas principal(uno al lado del otro), seguido a esto se crear un botón que cambia la funcionalidad de ver los resultados referentes a la imagen, o ver resultados trabajando con el video. Se cargan la imagen y el video, a los dos se le realiza el cambio a escala de grises de cada cuadro pintado por segundo.  En la imagen también se trabaja con filtros convolucionales los cuales se ven en la parte de derecha y pueden ser cambiados con las teclas de izquierda y derecha las cuales cambian el filtro que se le aplica a la imagen. En la imagen medimos el brillo(intensidad) de cada pixel obtenido en escala de grises y se guarda en un arreglo, este es mostrado en el canvas derecho de resultados. Para la segmentación de la imagen a partir del histograma, inicialmente utilizamos las punciones de mousePressed() y mouseReleased() para saber las cordenadas de donde se presionó y donde se soltó el mouse y así seleccionar la sección del histograma donde se eligen el rango de brillos que queremos segmentar en la imagen, donde la selección denota el brillo original y lo que está por fuera de la selección, se cambia el color por amarillo para saber cual es.
+Para el video y hacer el análisis de la eficiencia computacional, se puso la opción de que el usuario puede incrementar y decrementar los frameRate a la reproducción del video mediantes las flechas de arriba y abajo, y ahí mismo se estará mostrando y actualizando el valor de los frames que está realizando en cada instante, cabe aclarar y los frames que puede alcanzar dependen de la arquitectura del computador.
 
 ## Entrega
 
