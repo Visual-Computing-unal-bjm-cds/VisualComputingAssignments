@@ -10,9 +10,9 @@ PGraphics pg, pg2;
 PImage myImage, myImageH, imgOr;
 Movie myMovie;
 boolean button = false;
+boolean arrastrar = false;
 float x;
-int y, w, h = 50, change, fr;
-
+int y, w, h = 50, change, fr, initH, initAux, finishH;
 //mascaras de convolucion:
 float mascaras[][][]={
   {//identidad
@@ -75,7 +75,7 @@ void setup() {
   w = width/5;  
   fr = 20;
   //Cargar Imagen
-  myImage = loadImage("img0.jpg");
+  myImage = loadImage("img1.jpg");
   if (myImage.width<myImage.height) {
     myImage.resize(0, int(height*0.7));
   } else {
@@ -131,11 +131,13 @@ void setup() {
 //DRAW---------------------------------------------------------------
 void draw() {
   if (button) {
+    arrastrar = false;
     fill(213, 34, 66);
     rect(x, y, w, h, 7);
     fill(255);
     text("Prueba con Imagen", width-(2.7*width/5), height-120);
     print(frameRate);
+    myMovie.play();
     pg.beginDraw();
     pg.background(34, 164, 213);
     myMovie.loadPixels();
@@ -182,6 +184,7 @@ void draw() {
       }
     }
   } else {
+    myMovie.pause();
     fill(213, 34, 66);
     rect(x, y, w, h, 7);
     fill(255);
@@ -227,7 +230,12 @@ void draw() {
       }
       int histMax = max(hist);
       pg2.stroke(#4dc03b);
-      for (int i = 0; i < myImage.width; i+=2) {
+      if(!arrastrar){
+        initH = 0; 
+        initAux = 0;
+        finishH = myImage.width;
+      }
+      for (int i = initH; i < finishH; i+=2) {
         int which = int(map(i, 0, myImage.width, 0, 255));
         int y = int(map(hist[which], 0, histMax, myImage.height, 0));
         pg2.line(i+(pg.width-myImage.width)/2, myImage.height+(pg2.height-myImageH.height)/2, i+(pg.width-myImage.width)/2, y+(pg2.height-myImageH.height)/2);
@@ -241,11 +249,49 @@ void draw() {
 }
 
 void mousePressed() {
+  arrastrar = true;
+  if((mouseX > (((width-(pg2.width*2))/3)*2 + pg2.width+ (pg.width-myImage.width)/2)) && (mouseX < (((width-(pg2.width*2))/3)*2 + 2*pg2.width - (pg.width-myImage.width)/2))
+   && (mouseY > 50) && (mouseY < (50 + pg2.height))){
+    initAux = mouseX - (((width-(pg2.width*2))/3)*2 + pg2.width+ (pg.width-myImage.width)/2);
+    println("d" + initAux);
+  }else{
+    if((mouseX < (((width-(pg2.width*2))/3)*2 + pg2.width+ (pg.width-myImage.width)/2))){
+      initAux = 0;
+    }else if((mouseX > (((width-(pg2.width*2))/3)*2 + 2*pg2.width - (pg.width-myImage.width)/2))){
+      initAux = myImage.width;
+    }
+  }
   if ((mouseX > x) && (mouseX < x+w) && (mouseY > y) && (mouseY < y+h)) {
     if (button) {
       button = false;
     } else {
       button = true;
+    }
+  }
+}
+
+void mouseReleased() {
+  if((mouseX > (((width-(pg2.width*2))/3)*2 + pg2.width+ (pg.width-myImage.width)/2)) && (mouseX < (((width-(pg2.width*2))/3)*2 + 2*pg2.width - (pg.width-myImage.width)/2))
+   && (mouseY > 50) && (mouseY < (50 + pg2.height))){
+    initH = initAux;
+    finishH = mouseX - (((width-(pg2.width*2))/3)*2 + pg2.width+ (pg.width-myImage.width)/2);
+    if(finishH < initH){
+      initH = finishH;
+      finishH = initAux;
+    }
+    println(initH);
+    println(finishH);
+  }else{
+    if((mouseX > (((width-(pg2.width*2))/3)*2 + 2*pg2.width - (pg.width-myImage.width)/2))){
+      initH = initAux;
+      finishH = myImage.width;
+      if(finishH < initH){
+        initH = finishH;
+        finishH = initAux;
+      }
+    }else if((mouseX < (((width-(pg2.width*2))/3)*2 + pg2.width+ (pg.width-myImage.width)/2))){
+      initH = 0;
+      finishH = initAux;
     }
   }
 }
