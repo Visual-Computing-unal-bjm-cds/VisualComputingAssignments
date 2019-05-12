@@ -119,23 +119,6 @@ void AmbiUno(){
 float xg = -0.75;
 float yg = -2.25;
 void GeomeUno(){
-  textSize(40);
-  textAlign(CENTER);
-  text("Ilusion Geometrica", (width*3)/4,150, 0);
-  textSize(25);
-  textAlign(CENTER);
-  text("Presiona las teclas de abajo y arriba", (width*3)/4,250, 0);
-  text("para interactuar.", (width*3)/4,280, 0);
-  fill(125,52,34);
-  if (keyCode == 38) fill(0);
-  rect(width-280, height-250,50,50);
-  fill(125,52,34);
-  if (keyCode == 40) fill(0);
-  rect(width-280, height-190,50,50);
-  fill(125,52,34);
-  rect(width-340, height-190,50,50);
-  rect(width-220, height-190,50,50);
-  
   stroke(0);
   translate(width/3,300,0);
   rotateY(yg);
@@ -146,8 +129,8 @@ void GeomeUno(){
   box(100,50,50);
   translate(-75,-200,175);
   box(50,50,400);
-  stroke(231, 76, 60);
-  translate(-30,1,174);
+  stroke(231, 76, 59);
+  translate(-30,1,175);
   box(15,50,50);
   
   if (keyCode == 40) {
@@ -168,9 +151,9 @@ int pantalla = 0;
 boolean button = false;
 void draw(){
   background(255);
-  if(pantalla == 0)AmbiUno();
+  if(pantalla == 0)GeomeUno();
   else if(pantalla == 1)ParaUno();
-  else if(pantalla == 2)GeomeUno();
+  else if(pantalla == 2)AmbiUno();
   
   if (keyPressed && !button) {
     button = true;

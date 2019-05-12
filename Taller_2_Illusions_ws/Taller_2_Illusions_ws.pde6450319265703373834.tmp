@@ -116,47 +116,14 @@ void AmbiUno(){
  }
 }
 
-float xg = -0.75;
-float yg = -2.25;
 void GeomeUno(){
-  textSize(40);
-  textAlign(CENTER);
-  text("Ilusion Geometrica", (width*3)/4,150, 0);
-  textSize(25);
-  textAlign(CENTER);
-  text("Presiona las teclas de abajo y arriba", (width*3)/4,250, 0);
-  text("para interactuar.", (width*3)/4,280, 0);
-  fill(125,52,34);
-  if (keyCode == 38) fill(0);
-  rect(width-280, height-250,50,50);
-  fill(125,52,34);
-  if (keyCode == 40) fill(0);
-  rect(width-280, height-190,50,50);
-  fill(125,52,34);
-  rect(width-340, height-190,50,50);
-  rect(width-220, height-190,50,50);
-  
-  stroke(0);
-  translate(width/3,300,0);
-  rotateY(yg);
-  rotateX(xg);
-  fill(231, 76, 60);
-  box(50,300,50);
-  translate(75,75,0);
-  box(100,50,50);
-  translate(-75,-200,175);
-  box(50,50,400);
   stroke(231, 76, 60);
-  translate(-30,1,174);
-  box(15,50,50);
-  
-  if (keyCode == 40) {
-    if(xg<0)xg+= 0.015;
-    if(yg<-1.8)yg+= 0.015;
-  }else if(keyCode == 38){
-    if(xg>-0.75)xg-= 0.015;
-    if(yg>-2.25)yg-= 0.015;
-  }
+  fill(231, 76, 60);
+  box(100,600,100);
+  translate(175,100,0);
+  box(250,100,100);
+  translate(-175,-350,-250);
+  box(100,100,600);
 }
 
 void setup(){
@@ -165,24 +132,17 @@ void setup(){
 }
 
 int pantalla = 0;
-boolean button = false;
 void draw(){
   background(255);
   if(pantalla == 0)AmbiUno();
   else if(pantalla == 1)ParaUno();
   else if(pantalla == 2)GeomeUno();
   
-  if (keyPressed && !button) {
-    button = true;
-    if(keyCode == 37){
-      if(pantalla >0) pantalla--;
-      else pantalla = 0;
-    }else if(keyCode == 39){
-      if(pantalla < 3) pantalla++;
-      else pantalla = 2;
-    }
-    delay(200);
-    button = false;
+  if(keyCode == 37){
+    if(pantalla >0) pantalla--;
+    else pantalla = 0;
+  }else if(keyCode == 39){
+    if(pantalla > 2) pantalla++;
+    else pantalla = 2;
   }
-  
 }
