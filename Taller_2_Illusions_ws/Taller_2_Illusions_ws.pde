@@ -1,104 +1,136 @@
-//Realizar dos canvas, el de la izquierda con una imagen o video,
-//el de la derecha con analisis.
-
-//----------------------------------------------------------------------
-//Librerias
-import processing.video.*;
-
-//variables globales
-PGraphics pg, pg2;
-PImage myImage, myImageH, imgOr;
-Movie myMovie;
-boolean button = false;
-boolean arrastrar = false;
-float x;
-int y, w, h = 50, change, fr, initH, initAux, finishH;
-
-
-//SETUP---------------------------------------------------------------
-void setup() {
-  background(34, 164, 213);
-}
-//DRAW---------------------------------------------------------------
-void draw() {
-
-  if (keyPressed) {
-    //Inicializacion del cuadro de la derecha para el histograma
-
-    switch(keyCode) {
-    case 39: //derecha……también admite RIGHT
-      change++;
-
-      break;
-    case 37: //izquierda…..también admite LEFT
-      change--;
-
-      break;
-
-    case 38: //arriba
-      fr++;
-      if (fr==20) {
-        fr=19;
-      }
-      break;
-    case 40: //izquierda…..también admite LEFT
-      fr--;
-      if (fr==0) {
-        fr=1;
-      }
-      break;
-    default:
-      break;
-    }
+float x = 5.2;
+float y = 0.85; 
+void ParaUno(){
+  textSize(40);
+  textAlign(CENTER);
+  text("Ilusion Paradogica", (width*3)/4,150, 0);
+  textSize(25);
+  textAlign(CENTER);
+  text("Presiona las teclas de abajo y arriba", (width*3)/4,250, 0);
+  text("para ver mas.", (width*3)/4,280, 0);
+  if (keyCode == 38) fill(0);
+  rect(width-250, height-250,50,50);
+  fill(125,52,34);
+  if (keyCode == 40) fill(0);
+  rect(width-250, height-190,50,50);
+  fill(125,52,34);
+  rect(width-310, height-190,50,50);
+  rect(width-190, height-190,50,50);
+  
+  translate(-100,400,200);
+  rotateX(x);
+  rotateY(y);
+  
+  float w = width/2;
+  float h = height/2;
+  stroke(125,52,34);
+  translate(w,h,0);
+  fill(42,52,34);
+  stroke(39, 174, 96);
+  box(100);
+  stroke(125,52,34);
+  fill(125,52,34);
+  translate(-100,47.5,-200);
+  box(100,5,500);
+  fill(42,52,34);
+  translate(200,-147.5,200);
+  stroke(39, 174, 96);
+  box(100);
+  stroke(125,52,34);
+  fill(125,52,34);
+  translate(0,-47.5,-150);
+  box(100,5,200);
+  translate(-150,0,-50);
+  box(200,5,100);
+  rotateY(-y);
+  rotateX(-x);
+  if (keyCode == 40) {
+    if(x<5.9)x+= 0.015;
+    if(y<0.91)y+= 0.015;
+  }else if(keyCode == 38){
+    if(x>5.2)x-= 0.015;
+    if(y>0.85)y-= 0.015;
   }
 }
 
-void mousePressed() {
-  arrastrar = true;
-  if ((mouseX > (((width-(pg2.width*2))/3)*2 + pg2.width+ (pg.width-myImage.width)/2)) && (mouseX < (((width-(pg2.width*2))/3)*2 + 2*pg2.width - (pg.width-myImage.width)/2))
-    && (mouseY > 50) && (mouseY < (50 + pg2.height))) {
-    initAux = mouseX - (((width-(pg2.width*2))/3)*2 + pg2.width+ (pg.width-myImage.width)/2);
-  } else {
-    if ((mouseX < (((width-(pg2.width*2))/3)*2 + pg2.width+ (pg.width-myImage.width)/2))) {
-      initAux = 0;
-    } else if ((mouseX > (((width-(pg2.width*2))/3)*2 + 2*pg2.width - (pg.width-myImage.width)/2))) {
-      initAux = myImage.width;
-    }
-  }
-  if ((mouseX > x) && (mouseX < x+w) && (mouseY > y) && (mouseY < y+h)) {
-    if (button) {
-      button = false;
-    } else {
-      button = true;
-    }
-  }
+boolean cuboIz = true;
+boolean cuboDe = true;
+void AmbiUno(){
+ textSize(40);
+ textAlign(CENTER);
+ text("Ilusion Ambigua", width/2,100, 0);
+ textSize(25);
+ textAlign(CENTER);
+ text("Presiona las teclas de A, S y D para interactuar", width/2,height-100, 0);
+ text("las flechas para cambiar de Ilusion Optica.", width/2,height-70, 0);
+ float w = width/2;
+ float h = height/2;
+ int v = 0;
+ float wAux;
+ for(int i=0; i<5;i++){
+   wAux = w - (v*30);
+   for(int j=0; j<(v+1);j++){
+     fill(241, 196, 15);
+     quad(wAux,h-150,wAux-30,h-100,wAux,h-50,wAux + 30, h-100);
+     wAux += 60;
+   }
+   h+=50;
+   if(i>1)v--;
+   else v++;
+ }
+ h = height/2;
+ for(int j=0;j<3;j++){
+   for(int i=0; i<3;i++){
+     if(cuboIz){
+       fill(39, 174, 96);
+       quad((w-j*30)-(180 - i*60), h-(150 - j*50), (w-j*30)-(210- i*60), h-(100- j*50), (w-j*30)-(150-i*60), h-(100- j*50), (w-j*30)-(120-i*60), h-(150- j*50));
+       fill(231, 76, 60);
+       quad((w+j*30)-(270 - i*60),h + (j*50),(w+j*30)-(240 - i*60),h+50+ (j*50),(w+j*30)-(180- i*60),h+50+ (j*50),(w+j*30)-(210 - i*60),h+ (j*50));
+     }else{
+       fill(255,255,255);
+       quad(w-180,h-150,w-270,h,w-90,h,w,h-150);
+       quad(w-270,h,w-180,h+150,w,h+150,w-90,h);
+     }
+     if(cuboDe){
+       fill(41, 128, 185);
+       quad((w+j*30) + (i*60),h-150 + (j*50),(w+j*30)+ (30 + i*60),h-100 + (j*50),(w+j*30)+ (90 + i*60),h-100 + (j*50),(w+j*30)+ (60 + i*60),h-150 + (j*50));
+       fill(230, 126, 34);
+       quad((w - j*30) + (90 + i*60), h + (j*50), (w - j*30)+(60 + i*60), h + (50 + j*50), (w-j*30)+ (120+i*60), h + (50 + j*50), (w-j*30)+(150+i*60), h +(j*50));
+     }else{
+       fill(255,255,255);
+       quad(w,h-150,w+90,h,w+270,h,w+180,h-150);
+       quad(w+90,h,w,h+150,w+180,h+150,w+270,h);
+     }
+   }
+ }
+ 
+ if (key == 'd' || key == 'D') {
+   cuboIz = false;
+   cuboDe = true;
+ }else if(key == 'a' || key == 'A'){
+   cuboIz = true;
+   cuboDe = false;
+ }else if (key == 's' || key == 'S'){
+   cuboIz = true;
+   cuboDe = true;
+ }
 }
 
-void mouseReleased() {
-  if ((mouseX > (((width-(pg2.width*2))/3)*2 + pg2.width+ (pg.width-myImage.width)/2)) && (mouseX < (((width-(pg2.width*2))/3)*2 + 2*pg2.width - (pg.width-myImage.width)/2))
-    && (mouseY > 50) && (mouseY < (50 + pg2.height))) {
-    initH = initAux;
-    finishH = mouseX - (((width-(pg2.width*2))/3)*2 + pg2.width+ (pg.width-myImage.width)/2);
-    if (finishH < initH) {
-      initH = finishH;
-      finishH = initAux;
-    }
-  } else {
-    if ((mouseX > (((width-(pg2.width*2))/3)*2 + 2*pg2.width - (pg.width-myImage.width)/2))) {
-      initH = initAux;
-      finishH = myImage.width;
-      if (finishH < initH) {
-        initH = finishH;
-        finishH = initAux;
-      }
-    } else if ((mouseX < (((width-(pg2.width*2))/3)*2 + pg2.width+ (pg.width-myImage.width)/2))) {
-      initH = 0;
-      finishH = initAux;
-    }
-  }
+void setup(){
+  size(1000,600,P3D);
+  background(255);
 }
 
-// Called every time a new frame is available to read
-void movieEvent(Movie m) {
-  m.read();
+int pantalla = 0;
+void draw(){
+  background(255);
+  if(pantalla == 0)AmbiUno();
+  else if(pantalla == 1)ParaUno();
+  if(keyCode == 37){
+    if(pantalla >0) pantalla--;
+    else pantalla = 0;
+  }else if(keyCode == 39){
+    if(pantalla >1) pantalla++;
+    else pantalla = 1;
+  }
 }
