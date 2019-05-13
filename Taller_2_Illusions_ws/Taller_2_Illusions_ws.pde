@@ -1,6 +1,5 @@
 float x = 5.2;
-float y = 0.85;
-
+float y = 0.85; 
 void ParaUno() {
   textSize(40);
   textAlign(CENTER);
@@ -56,7 +55,6 @@ void ParaUno() {
 
 boolean cuboIz = true;
 boolean cuboDe = true;
-
 void AmbiUno() {
   textSize(40);
   textAlign(CENTER);
@@ -118,6 +116,49 @@ void AmbiUno() {
   }
 }
 
+float xg = -0.75;
+float yg = -2.25;
+void GeomeUno() {
+  textSize(40);
+  textAlign(CENTER);
+  text("Ilusion Geometrica", (width*3)/4, 150, 0);
+  textSize(25);
+  textAlign(CENTER);
+  text("Presiona las teclas de abajo y arriba", (width*3)/4, 250, 0);
+  text("para interactuar.", (width*3)/4, 280, 0);
+  fill(125, 52, 34);
+  if (keyCode == 38) fill(0);
+  rect(width-280, height-250, 50, 50);
+  fill(125, 52, 34);
+  if (keyCode == 40) fill(0);
+  rect(width-280, height-190, 50, 50);
+  fill(125, 52, 34);
+  rect(width-340, height-190, 50, 50);
+  rect(width-220, height-190, 50, 50);
+
+  stroke(0);
+  translate(width/3, 300, 0);
+  rotateY(yg);
+  rotateX(xg);
+  fill(231, 76, 60);
+  box(50, 300, 50);
+  translate(75, 75, 0);
+  box(100, 50, 50);
+  translate(-75, -200, 175);
+  box(50, 50, 400);
+  stroke(231, 76, 60);
+  translate(-30, 1, 174);
+  box(15, 50, 50);
+
+  if (keyCode == 40) {
+    if (xg<0)xg+= 0.015;
+    if (yg<-1.8)yg+= 0.015;
+  } else if (keyCode == 38) {
+    if (xg>-0.75)xg-= 0.015;
+    if (yg>-2.25)yg-= 0.015;
+  }
+}
+
 PGraphics cv1;
 PImage img1, img2;
 int actual;
@@ -145,7 +186,7 @@ void Complement() {
   image(cv1, 250, 100);
   textSize(20);
   textAlign(CENTER);
-  text("Mirar fijamente el punto rojo 10 segundos y cambiar\ncon las flechas de arriba y abajo", width/2, 20, 0);
+  text("Mirar fijamente el punto rojo 10 segundos y cambiar\ncon las flechas de arriba y abajo", width/2, 40, 0);
 }
 
 PImage cambioGris(PImage im) {
@@ -172,6 +213,7 @@ PImage cambioCompl(PImage im) {
   return im;
 }
 
+
 void setup() {
   size(1000, 600, P3D);
   background(255);
@@ -192,6 +234,7 @@ void setup() {
 }
 
 int pantalla = 0;
+boolean button = false;
 void draw() {
   background(255);
   switch(pantalla) {
@@ -202,19 +245,21 @@ void draw() {
     ParaUno();
     break;
   case 2:
+    GeomeUno();
+    break;
+  case 3:
     Complement();
     break;
   }
-
   if (keyPressed) {
     switch(keyCode) {
-    case 39: //derecha……también admite RIGHT
+    case 39: 
       pantalla++;
-      if (pantalla >2)pantalla = 0;
+      if (pantalla >3)pantalla = 0;
       break;
-    case 37: //izquierda…..también admite LEFT
+    case 37: 
       pantalla--;
-      if (pantalla <0)pantalla = 2;
+      if (pantalla <0)pantalla = 3;
       break;
     case 40:
       one=!one;
