@@ -189,9 +189,13 @@ void Complement() {
   cv1.circle(226.5, 226.5, 5);
   cv1.endDraw();
   image(cv1, 250, 100);
+  textSize(40);
+  fill(0,153,0);
+  textAlign(CENTER);
+  text("Ilusion de Color", width/2, 80, 0);
   textSize(20);
   textAlign(CENTER);
-  text("Mirar fijamente el punto rojo 10 segundos y cambiar\ncon las flechas de arriba y abajo", width/2, 40, 0);
+  text("Mirar fijamente el punto rojo 10 segundos y cambiar\ncon las flechas de arriba y abajo", width/2, 500, 0);
 }
 
 PImage cambioGris(PImage im) {
@@ -219,46 +223,92 @@ PImage cambioCompl(PImage im) {
 }
 
 PGraphics cv2;
-int j,speed;
+int j, speed;
 boolean dir=false;
-void rectangles(){
+void rectangles() {
   cv2.beginDraw();
-  cv2.background(242,242,242);
-  if(!mousePressed){
-  cv2.noStroke();
-  cv2.fill(0);
-  for(int i=0;i<cv2.width;i+=30){
-    cv2.rect(i,0,15,cv2.height);
+  cv2.background(242, 242, 242);
+  if (!mousePressed) {
+    cv2.noStroke();
+    cv2.fill(0);
+    for (int i=0; i<cv2.width; i+=30) {
+      cv2.rect(i, 0, 15, cv2.height);
+    }
   }
-  }
   cv2.noStroke();
-  cv2.fill(242,242,0);
-  cv2.rect(j,150,60,25);
+  cv2.fill(242, 242, 0);
+  cv2.rect(j, 150, 60, 25);
   cv2.noStroke();
-  cv2.fill(0,0,100);
-  cv2.rect(j,250,60,25);
-  if(j+60>=cv2.width || j<=0)dir=!dir;
-  if(dir)j+=speed;
+  cv2.fill(0, 0, 100);
+  cv2.rect(j, 250, 60, 25);
+  if (j+60>=cv2.width || j<=0)dir=!dir;
+  if (dir)j+=speed;
   else j-=speed;
   cv2.endDraw();
   image(cv2, 200, 100);
   if (keyPressed) {
     if (keyCode==38) {
-      if(speed<8){
+      if (speed<8) {
         speed++;
       }
-    }else if(keyCode==40){
-      if(speed>0){
+    } else if (keyCode==40) {
+      if (speed>0) {
         speed--;
       }
     }
   }
+  textSize(40);
+  fill(153,153,0);
+  textAlign(CENTER);
+  text("Ilusion de Movimiento", width/2, 40, 0);
   textSize(20);
   textAlign(CENTER);
-  text("Modifique la velocidad con las flechas de arriba y abajo\nOprima el Mouse para quitar las barras", width/2, 40, 0);
+  text("Modifique la velocidad con las flechas de arriba y abajo\nOprima el Mouse para quitar las barras", width/2, 65, 0);
   textSize(40);
   textAlign(CENTER);
   text("Velocidad: "+speed, width/2, 550, 0);
+}
+
+PGraphics cv3;
+int transparency;
+void lineConect() {
+  cv3.beginDraw();
+  cv3.background(242, 242, 242);
+  cv3.stroke(0);
+  cv3.strokeWeight(5);
+  for (int i=20; i<cv3.width+400; i+=30) {
+    cv3.line(i, 0, -300+i, cv3.height);
+  }
+  if (!mousePressed) {
+    cv3.noStroke();
+    cv3.fill(255,255,0,transparency);
+    for (int i=0; i<cv3.width; i+=60) {
+      cv3.rect(i, 0, 30, cv3.height);
+    }
+  }
+  if (keyPressed) {
+    if (keyCode==38) {
+      if (transparency<255) {
+        transparency+=10;
+      }
+    } else if (keyCode==40) {
+      if (transparency>0) {
+        transparency-=10;
+      }
+    }
+  }
+  cv3.endDraw();
+  image(cv3, 200, 100);
+  textSize(40);
+  fill(0,153,153);
+  textAlign(CENTER);
+  text("Ilusion Optica", width/2, 40, 0);
+  textSize(20);
+  textAlign(CENTER);
+  text("Quite las barras amarillas oprimiendo el mouse para ver las conexiones", width/2, 80, 0);
+  textSize(20);
+  textAlign(CENTER);
+  text("Si aun tiene dudas, modifique la transparencia con las flechas de arriba y abajo", width/2, 550, 0);
 }
 
 void setup() {
@@ -276,9 +326,11 @@ void setup() {
   actual=0;
   one=true;
   cv1=createGraphics(460, 460);
-  cv2=createGraphics(600,400);
+  cv2=createGraphics(600, 400);
+  cv3=createGraphics(600, 400);
   j=0;
   speed=1;
+  transparency=255;
   cambioCompl(img1);
   cambioGris(img2);
 }
@@ -303,16 +355,19 @@ void draw() {
   case 4:
     rectangles();
     break;
+  case 5:
+    lineConect();
+    break;
   }
   if (keyPressed) {
     switch(keyCode) {
     case 39: 
       pantalla++;
-      if (pantalla >4)pantalla = 0;
+      if (pantalla >5)pantalla = 0;
       break;
     case 37: 
       pantalla--;
-      if (pantalla <0)pantalla = 4;
+      if (pantalla <0)pantalla = 5;
       break;
     default:
       break;
