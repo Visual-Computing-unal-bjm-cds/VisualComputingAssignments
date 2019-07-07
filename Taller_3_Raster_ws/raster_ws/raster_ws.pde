@@ -11,7 +11,7 @@ Vector v1, v2, v3;
 TimingTask spinningTask;
 boolean yDirection;
 // scaling is a power of 2
-int n = 4;
+int n = 6;
 
 // 2. Hints
 boolean triangleHint = true;

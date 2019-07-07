@@ -3,6 +3,7 @@ Movie myMovie;
 PShape img;
 int option=0;
 int shader=0;
+int onetime=0;
 boolean isVideo = true;
 
 PShader texShader;
@@ -16,7 +17,6 @@ void setup() {
     shape(createShape(loadImage("img" + option + ".jpg")));
   }else{
     myMovie = new Movie(this, "video.mov");
-    myMovie.loop();
   }
   shader(loadShader(shaders[0]));
 }
@@ -24,11 +24,16 @@ void setup() {
 void draw() {
   background(34, 164, 213);
   if(isVideo){
+    myMovie.loop();
     image(myMovie, (width-myMovie.width)/2, (height-myMovie.height)/2);
   }else{
+    myMovie.pause();
     shape(createShape(loadImage("img" + option + ".jpg"))); 
   }
-  shader(loadShader(shaders[shader]));
+  if(onetime==0){
+    shader(loadShader(shaders[shader]));
+    onetime++;
+  }
 }
 
 PShape createShape(PImage tex) {
@@ -67,6 +72,7 @@ void keyPressed() {
   }else if(key == 'e' || key == 'E'){
     isVideo = true;
   }
+  onetime--;
 }
 
 // Called every time a new frame is available to read
