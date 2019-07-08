@@ -41,10 +41,8 @@ PShape createCan(float r, float h, int detail) {
 
 void keyPressed() {
   if (key == CODED){
-    if (keyCode == DOWN)cz += 200;
-    else if(keyCode == UP)cz -= 200;
-    else if (keyCode == LEFT)cy += 200;
-    else if(keyCode == RIGHT)cy -= 200;
+    if (keyCode == UP)cy += 200;
+    else if(keyCode == DOWN)cy -= 200;
   }
   if (key == '+')lp += 100;
   else if (key == '-')lp -= 100;

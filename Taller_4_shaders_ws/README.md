@@ -1,4 +1,5 @@
-﻿# Taller de shaders
+﻿
+# Taller de shaders
 
 ## Propósito
 
@@ -28,7 +29,7 @@ Complete la tabla:
 
 ## Informe
 
-(elabore en este sección un informe del ejercicio realizado)
+Carpeta light: Contiene el punto dos, donde se representa un modelo cilíndrico(can) por medio de shaders, este cilindro se puede mover para ver desde arriba o desde abajo con las flechas UP y DOWN. También por medio de shaders se realiza la luz(lightShader) que se va a mostrar en el cilindro, esta luz se configura con la función "loadShader" la cual recibe como parámetros los archivos de configuración, estos archivos se encuentran en la carpeta data, teniendo en sí, dos ejemplos de fuentes de luz difusa(los cuales se puede ver con las teclas "d" y "c") y dos ejemplos de fuentes de luz especular(los cuales se puede ver con las teclas "s" y "x"). Con las teclas "+" y "-" se puede variar la profundidad de la luz reflejada en el cilindro.
 
 ## Entrega
 
