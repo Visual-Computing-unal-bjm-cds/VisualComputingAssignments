@@ -12,7 +12,6 @@ String[] shaders = {"original.glsl","edgeDetection.glsl","boxBlur.glsl","sharpen
 
 void setup() {
   size(1000,600, P2D);
-  background(34, 164, 213);
   if(!isVideo){
     shape(createShape(loadImage("img" + option + ".jpg")));
   }else{
